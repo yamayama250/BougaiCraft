@@ -1,0 +1,10 @@
+name: bougaiCraft
+version: '1.0-SNAPSHOT'
+main: me.gucchan.bougaiCraft.BougaiCraft
+api-version: '1.21'
+commands:
+  bougai:
+    description: BougaiCraftPlugin Main Command
+    usage: /bougai <subcommand> [args]
+    aliases: [bg]
+    permission: op
