@@ -1,4 +1,4 @@
-# LimitsWorldPlugin
+# BougaiCraft
 YouTube上で貰ったコメントやスーパーチャットに応じてMineCraft上でアクションを起こすプラグイン
 
 ## 動作環境
