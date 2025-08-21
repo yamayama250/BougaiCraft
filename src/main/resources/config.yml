@@ -1,0 +1,11 @@
+# このセクションに、特定のコメントとスポーンさせたいモンスターを設定します。
+# コメントのキーワード: モンスター名 (大文字・小文字は区別されません)
+# モンスター名の一覧はこちらを参照してください: https://papermc.io/javadocs/paper/1.21/org/bukkit/entity/EntityType.html
+comment-spawns:
+#  creeper: CREEPER
+  "ゾンビ": ZOMBIE
+  "スケルトン": SKELETON
+  "クモ": SPIDER
+#  "エンダーマン": ENDERMAN
+  "ウィッチ": WITCH
+  "頑張れ": WOLF # 「頑張れ」というコメントで犬(WOLF)をスポーン

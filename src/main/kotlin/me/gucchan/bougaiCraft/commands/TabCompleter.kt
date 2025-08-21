@@ -10,7 +10,7 @@ class TabCompleter : TabCompleter {
 
         when (args.size) {
             1 -> {
-                result.addAll(listOf("authorize", "start", "stop"))
+                result.addAll(listOf("authorize", "start", "stop", "reload"))
                 result = result.filter {
                     it.startsWith(args[0])
                 }.toMutableList()
