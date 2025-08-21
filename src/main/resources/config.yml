@@ -1,6 +1,6 @@
 # このセクションに、特定のコメントとスポーンさせたいモンスターを設定します。
 # コメントのキーワード: モンスター名 (大文字・小文字は区別されません)
-# モンスター名の一覧はこちらを参照してください: https://papermc.io/javadocs/paper/1.21/org/bukkit/entity/EntityType.html
+# モンスター名の一覧はこちらを参照してください: https://jd.papermc.io/paper/1.21.8/org/bukkit/entity/EntityType.html
 comment-spawns:
 #  creeper: CREEPER
   "ゾンビ": ZOMBIE
