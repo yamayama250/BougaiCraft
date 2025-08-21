@@ -2,6 +2,7 @@ package me.gucchan.bougaiCraft.commands
 
 import me.gucchan.bougaiCraft.BougaiCraft
 import me.gucchan.bougaiCraft.commands.subcommands.AuthorizeCommand
+import me.gucchan.bougaiCraft.commands.subcommands.ReloadCommand
 import me.gucchan.bougaiCraft.commands.subcommands.StartCommand
 import me.gucchan.bougaiCraft.commands.subcommands.StopCommand
 import me.gucchan.bougaiCraft.commands.subcommands.TestSuperChatCommand
@@ -15,6 +16,7 @@ class BougaiCommand(plugin: BougaiCraft) : CommandExecutor {
         "authorize" to AuthorizeCommand(plugin, plugin.authManager),
         "start" to StartCommand(plugin),
         "stop" to StopCommand(plugin),
+        "reload" to ReloadCommand(plugin),
         "testsc" to TestSuperChatCommand(plugin)
     )
 

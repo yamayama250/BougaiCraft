@@ -126,28 +126,30 @@ class YoutubeChatListener(
                 else -> {}
             }
         } else {
-            // 通常コメントの処理 (例)
+            // 通常コメントの処理
             plugin.logger.info("チャット受信: $text")
-            when {
-                text.equals("ゾンビ", ignoreCase = true) -> {
+            for ((keyword, entityType) in plugin.configManager.commentSpawns) {
+                if(text.contains(keyword)) {
                     val spawnLoc = SpawnUtils.getSafeSpawnLocation(targetPlayer.location, 5, 10)
-                    targetPlayer.world.spawnEntity(spawnLoc, EntityType.ZOMBIE)
+
+                    if (entityType == EntityType.WOLF) {
+                        // オオカミをスポーンさせ、Wolf型にキャストする
+                        val wolf = targetPlayer.world.spawnEntity(targetPlayer.location, EntityType.WOLF) as Wolf
+
+                        // 召喚したオオカミを懐かせ、飼い主を対象プレイヤーに設定
+                        wolf.isTamed = true
+                        wolf.owner = targetPlayer
+
+                        // 名札を付け、名前を常に表示する設定にする
+                        wolf.customName = "§b${author}" // 色を付けて分かりやすく
+                        wolf.isCustomNameVisible = true
+                    } else {
+                        targetPlayer.world.spawnEntity(spawnLoc, entityType)
+                    }
+
+                    // 一致するキーワードが見つかったら、他のキーワードは探さずにループを抜ける
+                    break
                 }
-                text.contains("頑張れ") -> {
-                    val loc = targetPlayer.location
-
-                    // オオカミをスポーンさせ、Wolf型にキャストする
-                    val wolf = targetPlayer.world.spawnEntity(loc, EntityType.WOLF) as Wolf
-
-                    // 召喚したオオカミを懐かせ、飼い主を対象プレイヤーに設定
-                    wolf.isTamed = true
-                    wolf.owner = targetPlayer
-
-                    // 名札を付け、名前を常に表示する設定にする
-                    wolf.customName = "§b${author}" // 色を付けて分かりやすく
-                    wolf.isCustomNameVisible = true
-                }
-                else -> {}
             }
         }
     }

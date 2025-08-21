@@ -1,10 +1,17 @@
 # BougaiCraft
 YouTube上で貰ったコメントやスーパーチャットに応じてMineCraft上でアクションを起こすプラグイン
-
 ## 動作環境
 - Minecraft 1.21.8
 - SpigotMC 1.21.8
-
+## config.yml設定
+comment-spawns下に `<対応コメント>: <エンティティ名>`と記述  
+エンティティ名は[PaperMCのAPIドキュメント](https://jd.papermc.io/paper/1.21.8/org/bukkit/entity/EntityType.html)参照
+```yaml
+comment-spawns:
+  "ゾンビ": ZOMBIE
+  "スケルトン": SKELETON
+  "クモ": SPIDER
+```
 ## コマンド一覧
 - bougai
     - authorize  
@@ -15,3 +22,5 @@ YouTube上で貰ったコメントやスーパーチャットに応じてMineCra
       プレイヤー名を指定して、そのプレイヤーに対してバフやモンスターが湧くように
     - stop  
       プラグインの実行を終了する
+    - reload  
+      config.ymlの再読み込みを行う
