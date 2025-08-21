@@ -27,6 +27,9 @@ class YoutubeChatListener(
     private var nextPageToken: String? = null
     private var pollingTask: BukkitRunnable? = null
 
+    // 初回コメント取得時スキップのためのフラグ
+    private var isInitialFetch = true
+
     init {
         val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
         youtubeService = YouTube.Builder(
@@ -75,6 +78,14 @@ class YoutubeChatListener(
                 .list(currentLiveChatId, listOf("snippet", "authorDetails"))
                 .setPageToken(nextPageToken)
                 .execute()
+
+            // 初回取得時は過去メッセージが取得されてしまうので処理をスキップ
+            if (isInitialFetch) {
+                isInitialFetch = false
+                nextPageToken = response.nextPageToken
+                Thread.sleep(response.pollingIntervalMillis)
+                return
+            }
 
             response.items.forEach { message ->
                 Bukkit.getScheduler().runTask(plugin, Runnable {
