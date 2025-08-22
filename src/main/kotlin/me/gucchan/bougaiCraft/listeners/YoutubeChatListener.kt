@@ -8,9 +8,12 @@ import com.google.api.services.youtube.model.LiveChatMessage
 import me.gucchan.bougaiCraft.BougaiCraft
 import me.gucchan.bougaiCraft.utils.SpawnUtils
 import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.entity.Wolf
+import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
@@ -106,11 +109,50 @@ class YoutubeChatListener(
         val superChat = message.snippet.superChatDetails
 
         if (superChat != null) {
+            val tier = superChat.tier.toInt()
             val amount = superChat.amountMicros.divide(BigInteger.valueOf(1000000)).toLong()
             plugin.server.broadcastMessage("§6[§fYouTube§6] §e${author}さんから§c${amount}${superChat.currency}§eのSuperChat！")
 
-            when {
-                amount >= 10000 -> {
+            when (tier) {
+                // 青: クリーパー10体
+                1 -> {
+                    repeat(10) {
+                        val spawnLoc = SpawnUtils.getSafeSpawnLocation(targetPlayer.location, 5, 10)
+                        targetPlayer.world.spawnEntity(spawnLoc, EntityType.CREEPER)
+                    }
+                }
+                // 水: 採掘速度上昇 II (1分)
+                2 -> {
+                    val blindEffect = PotionEffect(PotionEffectType.BLINDNESS, 200, 1)
+                    targetPlayer.addPotionEffect(blindEffect)
+                }
+                // 緑: 移動速度上昇 II (1分)
+                3 -> {
+                    val blindEffect = PotionEffect(PotionEffectType.SPEED, 200, 1)
+                    targetPlayer.addPotionEffect(blindEffect)
+                }
+                // 黄: ダイヤ装備全身
+                4 -> {
+                    val inventory = targetPlayer.inventory
+                    // 既に装備があれば地面にドロップさせるため、直接セットする
+                    inventory.helmet = ItemStack(Material.DIAMOND_HELMET)
+                    inventory.chestplate = ItemStack(Material.DIAMOND_CHESTPLATE)
+                    inventory.leggings = ItemStack(Material.DIAMOND_LEGGINGS)
+                    inventory.boots = ItemStack(Material.DIAMOND_BOOTS)
+                }
+                // 橙: ワンパン剣
+                5 -> {
+                    val onePunchSword = ItemStack(Material.GOLDEN_SWORD)
+                    val meta = onePunchSword.itemMeta
+                    if (meta != null) {
+                        meta.setDisplayName("§6すごく強い剣")
+                        meta.addEnchant(Enchantment.SHARPNESS, 255, true) // Sharpness 255
+                        onePunchSword.itemMeta = meta
+                        targetPlayer.inventory.addItem(onePunchSword)
+                    }
+                }
+                // マゼンタ: ウィザー (5分)
+                6 -> {
                     val spawnLoc = SpawnUtils.getSafeSpawnLocation(targetPlayer.location, 5, 10)
                     val wither = targetPlayer.world.spawnEntity(spawnLoc, EntityType.WITHER)
                     // 5分後 (6000 ticks) にウィザーを削除するタスクをスケジュールする
@@ -122,17 +164,18 @@ class YoutubeChatListener(
                         }
                     }, 6000L)
                 }
-                amount in 200..<500 -> {
-                    // 効果: 採掘速度上昇 II (1分)
-                    val blindEffect = PotionEffect(PotionEffectType.BLINDNESS, 200, 1)
-                    targetPlayer.addPotionEffect(blindEffect)
-                }
-                200 > amount -> {
-                    // クリーパー10体
-                    repeat(10) {
-                        val spawnLoc = SpawnUtils.getSafeSpawnLocation(targetPlayer.location, 5, 10)
-                        targetPlayer.world.spawnEntity(spawnLoc, EntityType.CREEPER)
-                    }
+                // 赤: ウォーデン (5分)
+                7 -> {
+                    val spawnLoc = SpawnUtils.getSafeSpawnLocation(targetPlayer.location, 5, 10)
+                    val warden = targetPlayer.world.spawnEntity(spawnLoc, EntityType.WARDEN)
+                    // 5分後 (6000 ticks) にウォーデンを削除するタスクをスケジュールする
+                    Bukkit.getScheduler().runTaskLater(plugin, Runnable {
+                        // ウォーデンがまだサーバーに存在し、かつ死んでいない場合のみ削除を実行
+                        if (warden.isValid && !warden.isDead) {
+                            warden.remove()
+                            plugin.server.broadcastMessage("§a5分が経過したため、ウォーデンが消滅しました。")
+                        }
+                    }, 6000L)
                 }
                 else -> {}
             }
