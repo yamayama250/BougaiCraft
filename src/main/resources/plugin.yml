@@ -1,5 +1,5 @@
 name: bougaiCraft
-version: '1.2'
+version: '1.2.1'
 main: me.gucchan.bougaiCraft.BougaiCraft
 api-version: '1.21'
 commands:
