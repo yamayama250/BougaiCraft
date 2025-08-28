@@ -116,6 +116,7 @@ class YoutubeChatListener(
             when (tier) {
                 // 青: クリーパー10体
                 1 -> {
+                    targetPlayer.sendTitle("§c${author}さんが妨害中！", "§7クリーパーが出現！", 10, 70, 20)
                     repeat(10) {
                         val spawnLoc = SpawnUtils.getSafeSpawnLocation(targetPlayer.location, 5, 10)
                         targetPlayer.world.spawnEntity(spawnLoc, EntityType.CREEPER)
@@ -123,16 +124,19 @@ class YoutubeChatListener(
                 }
                 // 水: 採掘速度上昇 II (1分)
                 2 -> {
+                    targetPlayer.sendTitle("§a${author}さんがお助け！", "§f採掘速度がアップ！", 10, 70, 20)
                     val blindEffect = PotionEffect(PotionEffectType.BLINDNESS, 200, 1)
                     targetPlayer.addPotionEffect(blindEffect)
                 }
                 // 緑: 移動速度上昇 II (1分)
                 3 -> {
+                    targetPlayer.sendTitle("§a${author}さんがお助け！", "§f移動速度がアップ！", 10, 70, 20)
                     val blindEffect = PotionEffect(PotionEffectType.SPEED, 200, 1)
                     targetPlayer.addPotionEffect(blindEffect)
                 }
                 // 黄: ダイヤ装備全身
                 4 -> {
+                    targetPlayer.sendTitle("§a${author}さんがお助け！", "§f全身ダイヤ装備！", 10, 70, 20)
                     val inventory = targetPlayer.inventory
                     // 既に装備があれば地面にドロップさせるため、直接セットする
                     inventory.helmet = ItemStack(Material.DIAMOND_HELMET)
@@ -142,6 +146,7 @@ class YoutubeChatListener(
                 }
                 // 橙: ワンパン剣
                 5 -> {
+                    targetPlayer.sendTitle("§a${author}さんがお助け！", "§fすごく強い剣を獲得！", 10, 70, 20)
                     val onePunchSword = ItemStack(Material.GOLDEN_SWORD)
                     val meta = onePunchSword.itemMeta
                     if (meta != null) {
@@ -153,6 +158,7 @@ class YoutubeChatListener(
                 }
                 // マゼンタ: ウィザー (5分)
                 6 -> {
+                    targetPlayer.sendTitle("§c${author}さんが妨害中！", "§7ウィザーが5分間出現！", 10, 70, 20)
                     val spawnLoc = SpawnUtils.getSafeSpawnLocation(targetPlayer.location, 5, 10)
                     val wither = targetPlayer.world.spawnEntity(spawnLoc, EntityType.WITHER)
                     // 5分後 (6000 ticks) にウィザーを削除するタスクをスケジュールする
@@ -166,6 +172,7 @@ class YoutubeChatListener(
                 }
                 // 赤: ウォーデン (5分)
                 7 -> {
+                    targetPlayer.sendTitle("§c${author}さんが妨害中！", "§7ウォーデンが5分間出現！", 10, 70, 20)
                     val spawnLoc = SpawnUtils.getSafeSpawnLocation(targetPlayer.location, 5, 10)
                     val warden = targetPlayer.world.spawnEntity(spawnLoc, EntityType.WARDEN)
                     // 5分後 (6000 ticks) にウォーデンを削除するタスクをスケジュールする
@@ -198,6 +205,7 @@ class YoutubeChatListener(
                         wolf.customName = "§b${author}" // 色を付けて分かりやすく
                         wolf.isCustomNameVisible = true
                     } else {
+                        plugin.server.broadcastMessage("§c${keyword}がスポーン！")
                         targetPlayer.world.spawnEntity(spawnLoc, entityType)
                     }
 
