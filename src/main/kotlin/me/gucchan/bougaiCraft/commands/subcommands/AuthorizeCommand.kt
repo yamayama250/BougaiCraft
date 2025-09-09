@@ -2,11 +2,9 @@ package me.gucchan.bougaiCraft.commands.subcommands
 
 import me.gucchan.bougaiCraft.commands.SubCommand
 import me.gucchan.bougaiCraft.managers.YoutubeAuthManager
-import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import org.bukkit.plugin.java.JavaPlugin
 
-class AuthorizeCommand(private val plugin: JavaPlugin, private val authManager: YoutubeAuthManager) : SubCommand {
+class AuthorizeCommand(private val authManager: YoutubeAuthManager) : SubCommand {
 
     override fun execute(sender: CommandSender, args: Array<out String>) {
         if (args.isNotEmpty()) {
@@ -14,18 +12,15 @@ class AuthorizeCommand(private val plugin: JavaPlugin, private val authManager: 
             return
         }
 
-        sender.sendMessage("§eYouTubeの認証を開始します...")
-        sender.sendMessage("§eサーバーのコンソール（黒い画面）に表示されるURLにアクセスしてください。")
-
-        // 認証プロセスはサーバーをブロックする可能性があるので非同期で実行する
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, Runnable {
-            try {
-                authManager.authorize()
-                sender.sendMessage("§a認証が完了しました！")
-            } catch (_: Exception) {
-                sender.sendMessage("§c認証中にエラーが発生しました。コンソールを確認してください。")
-            }
-        })
-        return
+        try {
+            val authUrl = authManager.generateAuthUrl()
+            sender.sendMessage("§e==== YouTube認証 (ステップ1/2) ====")
+            sender.sendMessage("§7以下のURLにアクセスして認証を許可してください。")
+            sender.sendMessage("§b$authUrl") // URLを直接クリックできるよう、チャットに表示
+            sender.sendMessage("§7認証後、ブラウザのアドレスバーに表示されたURLを§cすべてコピー§7し、")
+            sender.sendMessage("§a/bg authcode <コピーしたURL> §7を実行してください。")
+        } catch (e: Exception) {
+            sender.sendMessage("§c認証URLの生成に失敗しました: ${e.message}")
+        }
     }
 }

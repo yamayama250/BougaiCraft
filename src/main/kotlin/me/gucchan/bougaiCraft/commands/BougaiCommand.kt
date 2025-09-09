@@ -1,6 +1,7 @@
 package me.gucchan.bougaiCraft.commands
 
 import me.gucchan.bougaiCraft.BougaiCraft
+import me.gucchan.bougaiCraft.commands.subcommands.AuthCodeCommand
 import me.gucchan.bougaiCraft.commands.subcommands.AuthorizeCommand
 import me.gucchan.bougaiCraft.commands.subcommands.ReloadCommand
 import me.gucchan.bougaiCraft.commands.subcommands.StartCommand
@@ -13,7 +14,8 @@ import org.bukkit.command.CommandSender
 class BougaiCommand(plugin: BougaiCraft) : CommandExecutor {
 
     private val subCommands = mapOf(
-        "authorize" to AuthorizeCommand(plugin, plugin.authManager),
+        "authorize" to AuthorizeCommand(plugin.authManager),
+        "authcode" to AuthCodeCommand(plugin),
         "start" to StartCommand(plugin),
         "stop" to StopCommand(plugin),
         "reload" to ReloadCommand(plugin),

@@ -14,4 +14,17 @@ object UrlUtils {
         // マッチ結果から1番目のキャプチャグループ（Video ID部分）を返す
         return matchResult?.groupValues?.get(1)
     }
+
+    /**
+     * リダイレクトURLから 'code' パラメータの値を抽出する
+     * @param url ブラウザのアドレスバーに表示されたURL全体
+     * @return 抽出した認証コード。見つからなければnullを返す
+     */
+    fun extractAuthCodeFromUrl(url: String): String? {
+        // パターン: 「?code=」または「&code=」の直後から始まり、'&'以外の文字の連続
+        val pattern = """(?<=[?&]code=)[^&]+""".toRegex()
+
+        // .find()で見つかった最初のマッチオブジェクトを取得し、その.value（値そのもの）を返す
+        return pattern.find(url)?.value
+    }
 }
