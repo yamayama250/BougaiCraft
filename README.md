@@ -15,7 +15,9 @@ comment-spawns:
 ## コマンド一覧
 - bougai
     - authorize  
-      YouTubeApiとの認証を行う  
+      YouTubeApiの認証URLを発行します
+    - authcode <認証URL>
+      発行した初回認証URLを使用して認証を行います  
       一度行うと認証情報が保存されるため初回のみ実行
     - start <配信URL> <プレイヤー名>  
       指定した配信を対象としてプラグインの動作を始める  

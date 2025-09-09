@@ -10,7 +10,7 @@ class TabCompleter : TabCompleter {
 
         when (args.size) {
             1 -> {
-                result.addAll(listOf("authorize", "start", "stop", "reload"))
+                result.addAll(listOf("authorize", "authcode", "start", "stop", "reload"))
                 result = result.filter {
                     it.startsWith(args[0])
                 }.toMutableList()
@@ -18,6 +18,10 @@ class TabCompleter : TabCompleter {
             2 if args[0] == "start" -> {
                 result.clear()
                 result.add("ライブ配信URL")
+            }
+            2 if args[0] == "authcode" -> {
+                result.clear()
+                result.add("認証画面URL")
             }
             3 if args[0] == "start" -> {
                 result.clear()
